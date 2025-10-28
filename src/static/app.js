@@ -12,32 +12,50 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Clear loading message
       activitiesList.innerHTML = "";
+      activitySelect.innerHTML = '<option value="">-- Select an activity --</option>';
 
       // Populate activities list
-      Object.entries(activities).forEach(([name, details]) => {
-        const activityCard = document.createElement("div");
-        activityCard.className = "activity-card";
-
-        const spotsLeft = details.max_participants - details.participants.length;
-
-        activityCard.innerHTML = `
-          <h4>${name}</h4>
-          <p>${details.description}</p>
-          <p><strong>Schedule:</strong> ${details.schedule}</p>
-          <p><strong>Availability:</strong> ${spotsLeft} spots left</p>
-        `;
-
-        activitiesList.appendChild(activityCard);
-
-        // Add option to select dropdown
-        const option = document.createElement("option");
-        option.value = name;
-        option.textContent = name;
-        activitySelect.appendChild(option);
-      });
+      displayActivities(activities);
     } catch (error) {
       activitiesList.innerHTML = "<p>Failed to load activities. Please try again later.</p>";
       console.error("Error fetching activities:", error);
+    }
+  }
+
+  // Function to display activities
+  function displayActivities(activities) {
+    activitiesList.innerHTML = "";
+    activitySelect.innerHTML = '<option value="">-- Select an activity --</option>';
+
+    for (const [name, details] of Object.entries(activities)) {
+      // Create activity card
+      const activityCard = document.createElement("div");
+      activityCard.className = "activity-card";
+
+      const participantCount = details.participants.length;
+      const spotsLeft = details.max_participants - participantCount;
+
+      activityCard.innerHTML = `
+        <h4>${name}</h4>
+        <p class="description">${details.description}</p>
+        <p class="schedule"><strong>Schedule:</strong> ${details.schedule}</p>
+        <p class="capacity"><strong>Capacity:</strong> ${participantCount}/${details.max_participants} (${spotsLeft} spots left)</p>
+        
+        <div class="participants-section">
+          <h5>Participants <span class="participant-count">${participantCount}</span></h5>
+          <ul class="participants-list">
+            ${details.participants.map(email => `<li>${email}</li>`).join('')}
+          </ul>
+        </div>
+      `;
+
+      activitiesList.appendChild(activityCard);
+
+      // Add option to select dropdown
+      const option = document.createElement("option");
+      option.value = name;
+      option.textContent = name;
+      activitySelect.appendChild(option);
     }
   }
 
