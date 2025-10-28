@@ -174,16 +174,36 @@ footer {
 }
 
 .participants-list li {
-  padding: 6px 0 6px 20px;
-  position: relative;
+  padding: 6px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   font-size: 0.85em;
   color: #666;
 }
 
-.participants-list li:before {
-  content: "●";
-  position: absolute;
-  left: 0;
-  color: #4CAF50;
-  font-size: 0.8em;
+.participant-email {
+  flex: 1;
+}
+
+.delete-btn {
+  background: transparent;
+  border: none;
+  padding: 4px 8px;
+  cursor: pointer;
+  color: #999;
+  transition: color 0.2s, background-color 0.2s;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.delete-btn:hover {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+.delete-btn svg {
+  display: block;
 }
